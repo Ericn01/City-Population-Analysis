@@ -1,5 +1,4 @@
-/City.class
-/LogicHandler.class
-/Main.class
-/Overview.fxml
-/Viewer.class
+/application/
+/controller/
+/model/
+/view/

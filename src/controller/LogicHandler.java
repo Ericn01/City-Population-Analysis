@@ -1,9 +1,13 @@
+package controller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import model.City;
 
 
 public class LogicHandler {
@@ -11,28 +15,39 @@ public class LogicHandler {
 	private ArrayList<City> cities = new ArrayList<City>();
 	
 	public void loadCityData() {
-		String filePath = "res/worldcities.csv";
+		String filePath = "./res/worldcities.csv";
 		String currentLineData = "";
+		int count = 1;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
+			br.readLine(); // skip over the first line: it cannot be interpreted properly.
 			while ((currentLineData = br.readLine()) != null) {
 				String[] values = currentLineData.split(","); // different values depending on position
-				
 				String cityName = values[0]; // declares the first value in the text file as the serial number.
 				String countryName = values[4]; // fifth value in the text file is the country's name.
 				String capitalStatus = values[8]; // the ninth value in the file holds the capital status
-				long cityPopulation = Long.parseLong(values[9]); // the tenth value in the csv file holds the population
+				String cityPopulation = values[9]; // the tenth value in the csv file holds the population
 			
 				City currentCity = new City(cityName, countryName, cityPopulation, capitalStatus);
+				System.out.println("[" + count + "] " + currentCity); // test to see that everything is working.
 				cities.add(currentCity); // add the city to the arrayList
+				count++;
 			}
 			br.close();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			System.out.println("An error occured while parsing through the file");
 			e.printStackTrace();
 		}
+		catch(NumberFormatException e) {
+			System.out.println("\nCannot convert null to a value - please add a value to the empty string");
+			e.getMessage();
+		}
 	}
 	
+	public int listSize() {
+		return cities.size();
+	}
 	public void updateCities() {
 		FileWriter openFile;
 		try {

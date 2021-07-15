@@ -1,7 +1,10 @@
+package application;
 
+import controller.LogicHandler;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import view.Viewer;
 
 
 /**
@@ -12,12 +15,16 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
+		
+		LogicHandler handler = new LogicHandler();
+		handler.loadCityData(); // loads the arrayList 
 		// Used anchor pane - non resizable
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(false);
 		// Setting application title
 		primaryStage.setTitle("City Analysis");
 		// Creating the icon for the project
-		Image icon = new Image("res/icon.jpg");
+		
+		Image icon = new Image("icon.jpg");
 		primaryStage.getIcons().add(icon);
 		
 		Viewer gui = new Viewer(primaryStage);
