@@ -13,8 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OverviewController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="725.0" stroke="BLACK" strokeType="INSIDE" width="1000.0">
          <fill>
@@ -39,8 +38,8 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="566.0" layoutX="35.0" layoutY="120.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="410.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="570.0" layoutX="537.0" layoutY="118.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="409.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9d1f" height="566.0" layoutX="35.0" layoutY="120.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="410.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#436b90" height="570.0" layoutX="537.0" layoutY="118.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="409.0" />
       <Button layoutX="13.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="119.0" text="Search Cities" />
       <Button layoutX="132.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="119.0" text="Add a City" />
       <Button layoutX="251.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="137.0" text="City Data Analysis" />
@@ -50,7 +49,7 @@
          </font>
       </Text>
       <TextField fx:id="minPopulation" layoutX="205.0" layoutY="215.0" prefHeight="26.0" prefWidth="210.0" />
-      <ListView fx:id="resultsList" layoutX="567.0" layoutY="184.0" prefHeight="483.0" prefWidth="355.0" />
+      <ListView fx:id="resultsList" layoutX="546.0" layoutY="154.0" prefHeight="523.0" prefWidth="390.0" />
       <Text fill="WHITE" layoutX="73.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your parameters (Optional)" wrappingWidth="329.9830722808838">
          <font>
             <Font size="22.0" />
@@ -62,12 +61,12 @@
          </font>
       </Text>
       <TextField fx:id="maxPopulation" layoutX="205.0" layoutY="295.0" prefHeight="26.0" prefWidth="210.0" />
-      <Button fx:id="queryButton" layoutX="75.0" layoutY="630.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #EC933B;" text="Query">
+      <Button fx:id="queryButton" layoutX="75.0" layoutY="630.0" mnemonicParsing="false" onAction="#query" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #EC933B; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" text="Query">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="clearButton" layoutX="265.0" layoutY="630.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #EC933B;" text="Clear">
+      <Button fx:id="clearButton" layoutX="265.0" layoutY="630.0" mnemonicParsing="false" onAction="#clear" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #EC933B; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" text="Clear">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -84,7 +83,7 @@
          </font>
       </Text>
       <TextField fx:id="cityName" layoutX="205.0" layoutY="455.0" prefHeight="26.0" prefWidth="210.0" />
-      <Label layoutX="552.0" layoutY="131.0" prefHeight="32.0" prefWidth="379.0" text="(x) Results in (y) countries were found! " textFill="WHITE">
+      <Label fx:id="resultsLabel" alignment="CENTER" layoutX="541.0" layoutY="118.0" prefHeight="32.0" prefWidth="402.0" text="Results will appear here..." textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>

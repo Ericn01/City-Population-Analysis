@@ -12,15 +12,7 @@ public class City {
 		setName(name);
 		setCountry(country);
 		setCapitalStatus(capitalStatus);
-		if(populationAsString.equals("")) { // if the string is empty, give it the default population of 1
-			System.out.println("Accessed!");
-			setPopulation("0");
-		}
-		else {
-			System.out.println(populationAsString.equals("") || populationAsString == null);
-			String properlyFormattedPopulationString = populationAsString.substring(1, (populationAsString.length() - 1));
-			setPopulation(properlyFormattedPopulationString);
-		}
+		setPopulationAsString(populationAsString); // ensures no errors occur - I hope?
 	}
 	
 	// city name getters and setters
@@ -28,7 +20,7 @@ public class City {
 		this.name = name;
 	}
 	public String getName() { 
-		return name; 
+		return removeQuotationMarks(name); 
 	}
 	
 	// country name getters and setters
@@ -41,7 +33,15 @@ public class City {
 	}
 	
 	public void setPopulationAsString(String populationAsString) {
-		this.populationAsString = populationAsString;
+		if (removeQuotationMarks(populationAsString).equals("") || removeQuotationMarks(populationAsString) == null) {
+			System.out.println("This is working");
+			this.populationAsString = "0";
+		}
+		else {
+			String properlyFormattedPopulationString = removeQuotationMarks(populationAsString);
+			this.populationAsString = properlyFormattedPopulationString;
+		}
+		this.population = Long.parseLong(this.populationAsString);
 	}
 	public String getPopulationAsString(){
 		return populationAsString;
@@ -51,11 +51,6 @@ public class City {
 	public long getPopulation() {
 		return population;
 	}
-
-	public void setPopulation(String populationAsString) {
-		this.population = Long.parseLong(populationAsString);
-	}
-
 	// capital Status getters and setters
 	public String getCapitalStatus() {
 		return capitalStatus;
@@ -63,14 +58,23 @@ public class City {
 
 	public void setCapitalStatus(String capitalStatus) {
 		
-		this.capitalStatus = capitalStatus;
+		this.capitalStatus = removeQuotationMarks(capitalStatus);
 	}
 	public String toString() {
-		String presentedName = name.substring(1, name.length() - 1);
-		String presentedCountry = country.substring(1, country.length() - 1);
+		String presentedName = removeQuotationMarks(name);
+		String presentedCountry = removeQuotationMarks(country);
 		
 		String info = String.format("%-1s%1s%-5s%1s%,1d%1s", presentedName, ", ", presentedCountry, ": ", population, " residents.");
 		return info;
+	}
+	/**
+	 * All data within the csv file is enclosed in quotation marks, making it harder to interpret.
+	 * This method removes the quotation marks to make the data easier to deal with.
+	 * @param s the inputted string
+	 * @return the string without quotation marks
+	 */
+	public String removeQuotationMarks(String s) {
+		return s.substring(1, (s.length() - 1));
 	}
 	
 	
