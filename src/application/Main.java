@@ -1,5 +1,8 @@
 package application;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import controller.LogicHandler;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -18,6 +21,7 @@ public class Main extends Application {
 		
 		LogicHandler handler = new LogicHandler();
 		handler.loadCityData(); // loads the arrayList 
+		//handler.printCities();
 		// Used anchor pane - non resizable
 		primaryStage.setResizable(false);
 		// Setting application title

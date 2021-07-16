@@ -1,6 +1,6 @@
 package model;
 
-public class City {
+public class City{
 	
 	private String name;
 	private String country;
@@ -76,8 +76,5 @@ public class City {
 	public String removeQuotationMarks(String s) {
 		return s.substring(1, (s.length() - 1));
 	}
-	
-	
-	
 
 }

@@ -50,6 +50,14 @@ public class OverviewController implements Initializable{
 	
 	
 	public void query(ActionEvent e) {
+		
+		// Initializing local input variables
+		long minPopulationInput = Long.parseLong(minPopulation.getText());
+		long maxPopulationInput = Long.parseLong(maxPopulation.getText());
+		String countryNameInput = countryName.getText();
+		String cityNameInput = cityName.getText();
+		String capitalStatusInput = capitalStatus.getValue();
+		
 		System.out.println("Querying...");
 		exceptionLabel.setText("Querying the database...");
 		exceptionLabel.setTextFill(Color.GREEN);
@@ -57,9 +65,10 @@ public class OverviewController implements Initializable{
 		
 		ArrayList<City> matches;
 		LogicHandler dataHandler = new LogicHandler();
-
-		matches = dataHandler.searchDatabase(Long.parseLong(minPopulation.getText()), Long.parseLong(maxPopulation.getText()), 
-				                   countryName.getText(), cityName.getText(), capitalStatus.getValue());
+		
+		dataHandler.printAnswers(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
+		matches = dataHandler.searchDatabase(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
+		
 		resultsList.getItems().addAll(matches.toString());
 		resultsLabel.setText(matches.size() + " results were found!");
 	}
@@ -80,7 +89,9 @@ public class OverviewController implements Initializable{
 		maxPopulation.setText("1500000");
 		countryName.setText("Canada");
 		cityName.setText("Calgary");
+		capitalStatus.getSelectionModel().select(3);
 		capitalStatus.setPromptText("No Status");
+		
 	}
 	
 	

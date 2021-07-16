@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import model.City;
 
 
-public class LogicHandler {
+public class LogicHandler implements Comparator<City>{
 	
 	private ArrayList<City> cities = new ArrayList<City>();
 	
@@ -18,6 +19,7 @@ public class LogicHandler {
 		String filePath = "./res/worldcities.csv";
 		String currentLineData = "";
 		int count = 1;
+		int citiesWithoutAPopulation = 0;
 		long start = System.nanoTime();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -33,12 +35,19 @@ public class LogicHandler {
 				City currentCity = new City(cityName, countryName, cityPopulation, capitalStatus);
 				System.out.println("[" + count + "] " + currentCity); // test to see that everything is working.
 				cities.add(currentCity); // add the city to the arrayList
+				
+				// this code is simply for testing - curious to see discrepancies in the database and what kind of action should be taken
+				if (currentCity.getPopulation() == 0) {
+					citiesWithoutAPopulation++;
+				}
 				count++;
 			}
 			long end = System.nanoTime();
 			long total = end - start;
-			System.out.println("\nThe database containing " + "(" + cities.size() + ") cities has been parsed successfully in " + (total / 1_000_000) + "ms");
-			System.out.println("Parsing speed: " + (cities.size() / (total / 1_000_000)) + " cities/ms");
+			
+			// prints out a report about the database parsing from info that was collected.
+			parseReport(listSize(), total, citiesWithoutAPopulation);
+		
 			br.close();
 		} 
 		catch (IOException e) {
@@ -49,6 +58,18 @@ public class LogicHandler {
 			System.out.println("\nCannot convert null to a value - please add a value to the empty string");
 			e.getMessage();
 		}
+	}
+	/**
+	 * Prints a report about the parsing process of the database
+	 * @param databaseSize  The size of database
+	 * @param parsingTime   The amount of time it took to parse the file (in ms).
+	 */
+	public void parseReport(int databaseSize, long parsingTime, int citiesNoPop) {
+		final int NANO_TO_MILLISECOND = 1_000_000;
+		String percentNoPopulation = String.format("%1.2f", (((double) citiesNoPop / databaseSize) * 100));
+		System.out.println("\nThe database containing " + "(" + databaseSize + ") cities has been parsed successfully in " + (parsingTime / NANO_TO_MILLISECOND) + "ms");
+		System.out.println("Parsing speed: " + (databaseSize / (parsingTime / NANO_TO_MILLISECOND)) + " cities/ms");
+		System.out.println("There are " + citiesNoPop + " (" + percentNoPopulation + "%) cities with a reported population of zero in the database");
 	}
 	
 	public int listSize() {
@@ -75,6 +96,22 @@ public class LogicHandler {
 		}
 	}
 	
+	public void printAnswers(long minPopulation, long maxPopulation, String countryName, String cityName, String capitalStatus) {
+		System.out.println("\nUser Query Inputs");
+		for (int i = 0; i < 40; i++) {
+			System.out.print("-");
+		}
+		System.out.println();
+		System.out.format("%-5s%-20s%,1d%n", "(1)", "Minimum Population: ", minPopulation);
+		System.out.format("%-5s%-20s%,1d%n", "(2)", "Maximum Population: ", maxPopulation);
+		System.out.format("%-5s%-20s%1s%n", "(3)", "Country Name: ", countryName);
+		System.out.format("%-5s%-20s%1s%n", "(4)", "City Name: ", cityName);
+		System.out.format("%-5s%-20s%1s%n", "(5)", "Capital Status: ", capitalStatus);
+		for (int i = 0; i < 40; i++) {
+			System.out.print("-");
+		}
+		System.out.println("\n\nEnd of Report");
+	}
 	public String convertCapitalStatus(String status) {
 		String convertedStatus = "";
 		switch(status) {
@@ -114,5 +151,28 @@ public class LogicHandler {
 			}
 		}
 		return results;
+	}
+	@Override
+	public int compare(City o1, City o2) {
+		return Long.valueOf(o1.getPopulation()).compareTo(Long.valueOf(o2.getPopulation()));
+	}
+	
+	public void sortListByPopulation() {
+		long topPopulation = cities.get(0).getPopulation();
+		for (City i: cities) {
+			if (i.getPopulation() > topPopulation) {
+				topPopulation = i.getPopulation();
+			    cities.set(0, i);
+			}
+		}
+	}
+	
+	public ArrayList<City> getCities() {
+		return cities;
+	}
+	public void printCities() {
+		for (City i: cities) {
+			System.out.println(i);
+		}
 	}
 }
