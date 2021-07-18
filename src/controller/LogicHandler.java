@@ -145,11 +145,11 @@ public class LogicHandler implements Comparator<City>{
 	 * @param cityName    the name of the city to be searched
 	 * @param capitalStatus the capital status of the city to be searched
 	 */
-	public ArrayList<City> searchDatabaseFull(long minPop, long maxPop, String countryName, String cityName, String capitalStatus) {
+	public ArrayList<City> searchDatabaseFull(long minPop, long maxPop, String countryName, String cityName, String capitalStatus, ArrayList<City> cityCollection) {
 		ArrayList<City> results = new ArrayList<City>();
 		if (countryName.equals("") && cityName.equals("")) {
 			System.out.println("Country and City have not been selected - Clause 1 has been accessed.");
-			for (City i: cities) {
+			for (City i: cityCollection) {
 				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
 					System.out.println(i);
 					results.add(i);
@@ -158,7 +158,7 @@ public class LogicHandler implements Comparator<City>{
 		}
 		else if(countryName.equals("") && !cityName.equals("")) {
 			System.out.println("Country has not been selected - Clause 2 has been accessed.");
-			for (City i: cities) {
+			for (City i: cityCollection) {
 				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
 					System.out.println(i);
 					results.add(i);
@@ -167,7 +167,7 @@ public class LogicHandler implements Comparator<City>{
 		}
 		else if(!countryName.equals("") && cityName.equals("")) {
 			System.out.println("City has not been selected - Clause 3 has been accessed.");
-			for (City i: cities) {
+			for (City i: cityCollection) {
 				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
 					System.out.println(i);
 					results.add(i);
@@ -177,7 +177,7 @@ public class LogicHandler implements Comparator<City>{
 		// top condition - everything is left to the default values
 		else {
 			System.out.println("All fields have a value - Clause 4 has been accessed.");
-			for (City i: cities) {
+			for (City i: cityCollection) {
 				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getCountry())
 					&& cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
 					System.out.println(i);
@@ -189,6 +189,9 @@ public class LogicHandler implements Comparator<City>{
 		return results;
 	}
 	
+	public void clearData() {
+		cities.clear();
+	}
 	@Override
 	public int compare(City o1, City o2) {
 		return Long.valueOf(o1.getPopulation()).compareTo(Long.valueOf(o2.getPopulation()));

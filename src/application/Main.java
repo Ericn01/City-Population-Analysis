@@ -21,7 +21,7 @@ public class Main extends Application {
 		
 		LogicHandler handler = new LogicHandler();
 		handler.loadCityData(); // loads the arrayList 
-		//handler.printCities();
+		
 		// Using anchor pane - non resizable
 		primaryStage.setResizable(false);
 		// Setting application title

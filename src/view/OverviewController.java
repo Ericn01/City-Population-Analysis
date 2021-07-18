@@ -51,7 +51,9 @@ public class OverviewController implements Initializable{
 	
 	
 	public void query(ActionEvent e) {
-		
+		LogicHandler dataHandler = new LogicHandler();
+		dataHandler.clearData(); // no repetition of data
+		dataHandler.loadCityData();
 		// Initializing local input variables
 		long minPopulationInput = Long.parseLong(minPopulation.getText());
 		long maxPopulationInput = Long.parseLong(maxPopulation.getText());
@@ -64,11 +66,12 @@ public class OverviewController implements Initializable{
 		exceptionLabel.setTextFill(Color.GREEN);
 		exceptionLabel.setFont(new Font("System", 20));
 		
+		
 		ArrayList<City> matches;
-		LogicHandler dataHandler = new LogicHandler();
+		ArrayList<City> cities = dataHandler.getCities();
 		
 		dataHandler.printAnswers(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
-		matches = dataHandler.searchDatabaseFull(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
+		matches = dataHandler.searchDatabaseFull(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput, cities);
 		
 		resultsList.getItems().addAll(matches.toString());
 		resultsLabel.setText(matches.size() + " results were found!");
