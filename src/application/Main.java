@@ -22,10 +22,10 @@ public class Main extends Application {
 		LogicHandler handler = new LogicHandler();
 		handler.loadCityData(); // loads the arrayList 
 		//handler.printCities();
-		// Used anchor pane - non resizable
+		// Using anchor pane - non resizable
 		primaryStage.setResizable(false);
 		// Setting application title
-		primaryStage.setTitle("City Analysis");
+		primaryStage.setTitle("City Analysis Tool");
 		// Creating the icon for the project
 		
 		Image icon = new Image("icon.jpg");

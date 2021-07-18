@@ -95,7 +95,14 @@ public class LogicHandler implements Comparator<City>{
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Gives a detailed report of all the inputs that the user has given - mostly used for troubleshooting
+	 * @param minPopulation the minimum population selected
+	 * @param maxPopulation the maximum population selected
+	 * @param countryName   the desired country's name
+	 * @param cityName      the desired city's name
+	 * @param capitalStatus the capital status of the selected location
+	 */
 	public void printAnswers(long minPopulation, long maxPopulation, String countryName, String cityName, String capitalStatus) {
 		System.out.println("\nUser Query Inputs");
 		for (int i = 0; i < 40; i++) {
@@ -106,12 +113,13 @@ public class LogicHandler implements Comparator<City>{
 		System.out.format("%-5s%-20s%,1d%n", "(2)", "Maximum Population: ", maxPopulation);
 		System.out.format("%-5s%-20s%1s%n", "(3)", "Country Name: ", countryName);
 		System.out.format("%-5s%-20s%1s%n", "(4)", "City Name: ", cityName);
-		System.out.format("%-5s%-20s%1s%n", "(5)", "Capital Status: ", capitalStatus);
+		System.out.format("%-5s%-20s%1s%n", "(5)", "Capital Status: ", convertCapitalStatus(capitalStatus));
 		for (int i = 0; i < 40; i++) {
 			System.out.print("-");
 		}
 		System.out.println("\n\nEnd of Report");
 	}
+	
 	public String convertCapitalStatus(String status) {
 		String convertedStatus = "";
 		switch(status) {
@@ -120,8 +128,6 @@ public class LogicHandler implements Comparator<City>{
 			break;
 		case "Administrative":
 			convertedStatus = "admin";
-			break;
-		case "No Status":
 			break;
 		case "Minor":
 			convertedStatus = "minor";
@@ -139,32 +145,53 @@ public class LogicHandler implements Comparator<City>{
 	 * @param cityName    the name of the city to be searched
 	 * @param capitalStatus the capital status of the city to be searched
 	 */
-	public ArrayList<City> searchDatabase(long minPop, long maxPop, String countryName, String cityName, String capitalStatus) {
+	public ArrayList<City> searchDatabaseFull(long minPop, long maxPop, String countryName, String cityName, String capitalStatus) {
 		ArrayList<City> results = new ArrayList<City>();
-		System.out.println("Converted capital status: " + convertCapitalStatus(capitalStatus) + " vs " + capitalStatus);
-		// top condition - everything is left to the default values
-		for (City i: cities) {
-			if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCountry().contains(countryName) 
-					&& i.getName().contains(cityName) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
-				System.out.println(i);
-				results.add(i);
+		if (countryName.equals("") && cityName.equals("")) {
+			System.out.println("Country and City have not been selected - Clause 1 has been accessed.");
+			for (City i: cities) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+					System.out.println(i);
+					results.add(i);
+				}
 			}
 		}
+		else if(countryName.equals("") && !cityName.equals("")) {
+			System.out.println("Country has not been selected - Clause 2 has been accessed.");
+			for (City i: cities) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+					System.out.println(i);
+					results.add(i);
+				}
+			}
+		}
+		else if(!countryName.equals("") && cityName.equals("")) {
+			System.out.println("City has not been selected - Clause 3 has been accessed.");
+			for (City i: cities) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+					System.out.println(i);
+					results.add(i);
+				}
+			}
+		}
+		// top condition - everything is left to the default values
+		else {
+			System.out.println("All fields have a value - Clause 4 has been accessed.");
+			for (City i: cities) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getCountry())
+					&& cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+					System.out.println(i);
+					results.add(i);
+				}
+			}
+		}
+		System.out.println(results);
 		return results;
 	}
+	
 	@Override
 	public int compare(City o1, City o2) {
 		return Long.valueOf(o1.getPopulation()).compareTo(Long.valueOf(o2.getPopulation()));
-	}
-	
-	public void sortListByPopulation() {
-		long topPopulation = cities.get(0).getPopulation();
-		for (City i: cities) {
-			if (i.getPopulation() > topPopulation) {
-				topPopulation = i.getPopulation();
-			    cities.set(0, i);
-			}
-		}
 	}
 	
 	public ArrayList<City> getCities() {

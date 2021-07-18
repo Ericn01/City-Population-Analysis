@@ -40,9 +40,9 @@
       </Text>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9d1f" height="566.0" layoutX="35.0" layoutY="120.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="410.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#436b90" height="570.0" layoutX="537.0" layoutY="118.0" stroke="BLACK" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" width="409.0" />
-      <Button layoutX="13.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="119.0" text="Search Cities" />
-      <Button layoutX="132.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="119.0" text="Add a City" />
-      <Button layoutX="251.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="137.0" text="City Data Analysis" />
+      <Button fx:id="topButton1" layoutX="35.0" layoutY="1.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="119.0" style="-fx-background-color: #000000,            linear-gradient(#7ebcea, #2f4b8f),            linear-gradient(#426ab7, #263e75),            linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);;" text="Search Cities" textFill="WHITE" />
+      <Button fx:id="topButton2" layoutX="156.0" layoutY="1.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="119.0" style="-fx-background-color: #000000,            linear-gradient(#7ebcea, #2f4b8f),            linear-gradient(#426ab7, #263e75),            linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);;" text="Add a City" textFill="WHITE" />
+      <Button fx:id="topButton3" layoutX="275.0" layoutY="1.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="162.0" style="-fx-background-color: #000000,            linear-gradient(#7ebcea, #2f4b8f),            linear-gradient(#426ab7, #263e75),            linear-gradient(#395cab, #223768); -fx-background-insets: 0,1,2,3; -fx-background-radius: 3,2,2,2; -fx-padding: 12 30 12 30; -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);;" text="City Data Analysis" textFill="WHITE" />
       <Text fill="WHITE" layoutX="50.0" layoutY="240.0" stroke="BLACK" strokeType="OUTSIDE" text="Minimum Population" wrappingWidth="150.0">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -99,5 +99,15 @@
             <Font size="5.0" />
          </font>
       </Label>
+      <Text layoutX="50.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Leave empty for more results)" wrappingWidth="150.0">
+         <font>
+            <Font name="System Bold Italic" size="10.0" />
+         </font>
+      </Text>
+      <Text layoutX="50.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Leave empty for more results)" wrappingWidth="150.0">
+         <font>
+            <Font name="System Bold Italic" size="10.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import controller.LogicHandler;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,6 +46,8 @@ public class OverviewController implements Initializable{
 	private Button queryButton;
 	@FXML
 	private Button clearButton;
+	@FXML 
+	private Button topButton1;
 	
 	
 	public void query(ActionEvent e) {
@@ -67,17 +68,18 @@ public class OverviewController implements Initializable{
 		LogicHandler dataHandler = new LogicHandler();
 		
 		dataHandler.printAnswers(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
-		matches = dataHandler.searchDatabase(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
+		matches = dataHandler.searchDatabaseFull(minPopulationInput, maxPopulationInput, countryNameInput, cityNameInput, capitalStatusInput);
 		
 		resultsList.getItems().addAll(matches.toString());
 		resultsLabel.setText(matches.size() + " results were found!");
 	}
 	
 	public void clear(ActionEvent e) {
-		minPopulation.clear();
-		maxPopulation.clear();
-		countryName.clear();
-		cityName.clear();
+		minPopulation.setText("0");
+		maxPopulation.setText("0");
+		countryName.setText("");
+		cityName.setText("");
+		capitalStatus.setPromptText("");
 	}
 	
 	@Override
@@ -86,12 +88,10 @@ public class OverviewController implements Initializable{
 		
 		// setting up some default values
 		minPopulation.setText("0");
-		maxPopulation.setText("1500000");
-		countryName.setText("Canada");
-		cityName.setText("Calgary");
+		maxPopulation.setText("10000");
+		countryName.setText("");
+		cityName.setText("");
 		capitalStatus.getSelectionModel().select(3);
-		capitalStatus.setPromptText("No Status");
-		
 	}
 	
 	

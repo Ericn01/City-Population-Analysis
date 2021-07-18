@@ -64,7 +64,7 @@ public class City{
 		String presentedName = removeQuotationMarks(name);
 		String presentedCountry = removeQuotationMarks(country);
 		
-		String info = String.format("%-1s%1s%-5s%1s%,1d%1s", presentedName, ", ", presentedCountry, ": ", population, " residents.");
+		String info = String.format("%-1s%1s%-5s%1s%,1d%1s%1s%1s%1s", presentedName, ", ", presentedCountry, ": ", population, " residents.", " [", capitalStatus, "]");
 		return info;
 	}
 	/**
