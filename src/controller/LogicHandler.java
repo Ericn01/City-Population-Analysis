@@ -138,7 +138,8 @@ public class LogicHandler implements Comparator<City>{
 		return convertedStatus;
 	}
 	/**
-	 * This method queries the database based off of the given inputs
+	 * This method queries the database based off of the given inputs. 
+	 * Beware, there's some terrible code in here, it works, but everything has been repeated - definitely needs a cleanup
 	 * @param minPop minimum population of city
 	 * @param maxPop maximum population of city
 	 * @param countryName the name of the country to be searched
@@ -147,40 +148,76 @@ public class LogicHandler implements Comparator<City>{
 	 */
 	public ArrayList<City> searchDatabaseFull(long minPop, long maxPop, String countryName, String cityName, String capitalStatus, ArrayList<City> cityCollection) {
 		ArrayList<City> results = new ArrayList<City>();
-		if (countryName.equals("") && cityName.equals("")) {
-			System.out.println("Country and City have not been selected - Clause 1 has been accessed.");
+		// no field has been selected - this is the most general search possible (000)
+		if (countryName.equals("") && cityName.equals("") && capitalStatus.equals("Don't Care")) {
+			System.out.println("Country and City and Capital Status have not been selected - Clause 1 has been accessed.");
+			for (City i: cityCollection) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop) {
+					results.add(i);
+				}
+			}
+		}
+		// the country's name and the city's name have not been selected. Capital status is selected (001)
+		else if (countryName.equals("") && cityName.equals("") && !capitalStatus.equals("Don't Care")) {
+			System.out.println("Country and city have not been selected - Clause 2 has been accessed");
 			for (City i: cityCollection) {
 				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
-					System.out.println(i);
 					results.add(i);
 				}
 			}
 		}
-		else if(countryName.equals("") && !cityName.equals("")) {
-			System.out.println("Country has not been selected - Clause 2 has been accessed.");
+		// the country's name and capital status have not been selected. city name has a value. (010)
+		else if (countryName.equals("") && !cityName.equals("") && capitalStatus.equals("Don't Care")) {
+			System.out.println("Country name and capital status have not been selected - Clause 3 has been accessed");
 			for (City i: cityCollection) {
-				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
-					System.out.println(i);
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getName().contains(cityName)) {
 					results.add(i);
 				}
 			}
 		}
-		else if(!countryName.equals("") && cityName.equals("")) {
-			System.out.println("City has not been selected - Clause 3 has been accessed.");
+		// the city's name and the capital status have not been selected. Country name is selected (100)
+		else if (!countryName.equals("") && cityName.equals("") && capitalStatus.equals("Don't Care")) {
+			System.out.println("City and capital status have not been selected - Clause 4 has been accessed");
 			for (City i: cityCollection) {
-				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
-					System.out.println(i);
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCountry().contains(countryName)) {
 					results.add(i);
 				}
 			}
 		}
-		// top condition - everything is left to the default values
+		// Capital status has not been selected, everything else has a value (110)
+		else if(!countryName.equals("") && !cityName.equals("") && capitalStatus.equals("Don't Care")) {
+			System.out.println("Capital status has not been selected - Clause 5 has been accessed.");
+			for (City i: cityCollection) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getName().contains(cityName) && i.getCountry().contains(countryName)) {
+					results.add(i);
+				}
+			}
+		}
+		// City name does not have a value. Everything else is filled out (101)
+		else if(!countryName.equals("") && cityName.equals("") && !capitalStatus.equals("Don't Care")) {
+			System.out.println("City name has not been selected - Clause 6 has been accessed.");
+			for (City i: cityCollection) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCountry().contains(countryName) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+
+					results.add(i);
+				}
+			}
+		}
+		// Country name does not have a value - everything else has one. (011)
+		else if(countryName.equals("") && !cityName.equals("") && !capitalStatus.equals("Don't Care")) {
+			System.out.println("Country name has not been selected - Clause 7 has been accessed.");
+			for (City i: cityCollection) {
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getName().contains(cityName) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
+					results.add(i);
+				}
+			}
+		}
+		// Everything has a value associated with it (111)
 		else {
-			System.out.println("All fields have a value - Clause 4 has been accessed.");
+			System.out.println("All fields have a value - Clause 8 has been accessed.");
 			for (City i: cityCollection) {
-				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && countryName.contains(i.getCountry())
-					&& cityName.contains(i.getName()) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
-					System.out.println(i);
+				if (i.getPopulation() >= minPop && i.getPopulation() <= maxPop && i.getCountry().contains(countryName)
+					&& i.getName().contains(cityName) && i.getCapitalStatus().equals(convertCapitalStatus(capitalStatus))) {
 					results.add(i);
 				}
 			}
@@ -192,6 +229,7 @@ public class LogicHandler implements Comparator<City>{
 	public void clearData() {
 		cities.clear();
 	}
+	
 	@Override
 	public int compare(City o1, City o2) {
 		return Long.valueOf(o1.getPopulation()).compareTo(Long.valueOf(o2.getPopulation()));
