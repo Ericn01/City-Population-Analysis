@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 import model.City;
 
@@ -238,6 +239,18 @@ public class LogicHandler implements Comparator<City>{
 	public ArrayList<City> getCities() {
 		return cities;
 	}
+	
+	public ArrayList<String> loadCountrySuggestions() {
+		ArrayList<String> countries = new ArrayList<String>();
+		for (City i: cities) {
+			int usableLength = i.getCountry().length() - 1;
+			String country = i.getCountry().substring(1, usableLength);
+			countries.add(country);
+		}
+		ArrayList<String> countriesNoDuplicates = (ArrayList<String>) countries.stream().distinct().collect(Collectors.toList());
+		return countriesNoDuplicates;
+	}
+	
 	public void printCities() {
 		for (City i: cities) {
 			System.out.println(i);

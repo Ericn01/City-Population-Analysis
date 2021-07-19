@@ -16,6 +16,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.controlsfx.control.textfield.TextFields;
+
 import model.City;
 
 public class OverviewController implements Initializable{
@@ -50,14 +52,15 @@ public class OverviewController implements Initializable{
 	@FXML 
 	private Button topButton1;
 	
-	
+	private LogicHandler dataHandler = new LogicHandler();
+
 	public void query(ActionEvent e) {
 		try {
-			
-			LogicHandler dataHandler = new LogicHandler();
+			resultsList.getItems().clear();
 			
 			dataHandler.clearData(); // no repetition of data
 			dataHandler.loadCityData();
+			
 			// Initializing local input variables
 			long minPopulationInput = Long.parseLong(minPopulation.getText());
 			long maxPopulationInput = Long.parseLong(maxPopulation.getText());
@@ -129,10 +132,12 @@ public class OverviewController implements Initializable{
 		resultsLabel.setText("Results will appear here...");
 	}
 	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		dataHandler.loadCityData(); // loads the data
+		TextFields.bindAutoCompletion(countryName, dataHandler.loadCountrySuggestions()); // binds the textfield "country name" to the database.
 		capitalStatus.getItems().addAll(options);
-		
 		// setting up some default values
 		minPopulation.setText("0");
 		maxPopulation.setText("10000");
