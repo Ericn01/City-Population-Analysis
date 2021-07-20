@@ -1,5 +1,6 @@
 package view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -8,7 +9,10 @@ import exceptions.MinGreaterThanMaxException;
 import exceptions.NegativeValueException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -16,12 +20,26 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
 import org.controlsfx.control.textfield.TextFields;
 
 import model.City;
 
 public class OverviewController implements Initializable{
 	
+
+	private Stage stage;
+	private Scene scene;
+	private Parent root;
+	
+	public void switchToDistanceScreen(ActionEvent event) throws IOException{
+		root = FXMLLoader.load(getClass().getResource("Distance.fxml"));
+		stage = (Stage) ((Stage) (event.getSource())).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+	}
 	/**
 	 * All text fields must have a default value set to them in order to avoid a NumberFormatException.
 	 * This program should be able to handle blank inputs.
@@ -131,8 +149,7 @@ public class OverviewController implements Initializable{
 		resultsList.getItems().clear();
 		resultsLabel.setText("Results will appear here...");
 	}
-	
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		dataHandler.loadCityData(); // loads the data
@@ -145,6 +162,5 @@ public class OverviewController implements Initializable{
 		cityName.setText("");
 		capitalStatus.getSelectionModel().select(4);
 	}
-	
-	
+
 }

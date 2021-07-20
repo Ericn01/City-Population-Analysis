@@ -29,11 +29,14 @@ public class LogicHandler implements Comparator<City>{
 				String[] values = currentLineData.split(","); // different values depending on position
 				
 				String cityName = values[0]; // declares the first value in the text file as the serial number.
+				String latitude = values[2]; // the third value in the text file is the city's latitude
+				String longitude = values[3]; // the fourth value in the text file is the city's longitude
 				String countryName = values[4]; // fifth value in the text file is the country's name.
+				
 				String capitalStatus = values[8]; // the ninth value in the file holds the capital status
 				String cityPopulation = values[9]; // the tenth value in the csv file holds the population
 				
-				City currentCity = new City(cityName, countryName, cityPopulation, capitalStatus);
+				City currentCity = new City(cityName, latitude, longitude, countryName, cityPopulation, capitalStatus);
 				System.out.println("[" + count + "] " + currentCity); // test to see that everything is working.
 				cities.add(currentCity); // add the city to the arrayList
 				
@@ -55,10 +58,10 @@ public class LogicHandler implements Comparator<City>{
 			System.out.println("An error occured while parsing through the file");
 			e.printStackTrace();
 		}
-		catch(NumberFormatException e) {
-			System.out.println("\nCannot convert null to a value - please add a value to the empty string");
-			e.getMessage();
-		}
+//		catch(NumberFormatException e) {
+//			System.out.println("\nCannot convert null to a value - please add a value to the empty string");
+//			e.getMessage();
+//		}
 	}
 	/**
 	 * Prints a report about the parsing process of the database
@@ -251,9 +254,38 @@ public class LogicHandler implements Comparator<City>{
 		return countriesNoDuplicates;
 	}
 	
+	public ArrayList<String> loadCitySuggestions() {
+		ArrayList<String> cityList = new ArrayList<String>();
+		for (City i: cities) {
+			String city = i.getName();
+			cityList.add(city);
+		}
+		ArrayList<String> citiesNoDuplicates = (ArrayList<String>) cityList.stream().distinct().collect(Collectors.toList());
+		return citiesNoDuplicates;
+	}
+	
 	public void printCities() {
 		for (City i: cities) {
 			System.out.println(i);
 		}
+	}
+	
+	/**
+	 * Implementing the haversine formula to calculate the distance between two points
+	 * @param lat1   City's 1 latitude point
+	 * @param long1  City's 1 longitude point
+	 * @param lat2   City's 2 latitude point
+	 * @param long2  City's 2 longitude point;
+	 * @return distance The distance between the two points (cities) on earth's surface
+	 */
+	public double calculateDistance(double lat1, double long1, double lat2, double long2) {
+		final double EARTH_RADIUS_KM = 6_371.0088;
+		double distance = 0;
+		double a = Math.pow(Math.sin((lat2 - lat1) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((long2 - long1) / 2), 2);
+		double c = 2 * Math.atan2(Math.pow(a, 0.5), (Math.pow(1 - a, 0.5)));
+		
+		distance = EARTH_RADIUS_KM * c;
+		
+		return distance;
 	}
 }

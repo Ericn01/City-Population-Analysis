@@ -3,16 +3,20 @@ package model;
 public class City{
 	
 	private String name;
+	private double latitude;
+	private double longitude;
 	private String country;
 	private long population;
 	private String capitalStatus;
 	private String populationAsString;
 	
-	public City(String name, String country, String populationAsString, String capitalStatus) {
+	public City(String name, String latitude, String longitude, String country, String populationAsString, String capitalStatus) {
 		setName(name);
 		setCountry(country);
+		setLatitude(latitude);
+		setLongitude(longitude);
 		setCapitalStatus(capitalStatus);
-		setPopulationAsString(populationAsString); // ensures no errors occur - I hope?
+		setPopulationAsString(populationAsString); 
 	}
 	
 	// city name getters and setters
@@ -32,9 +36,27 @@ public class City{
 		this.country = country;
 	}
 	
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitudeAsString) {
+		String properlyFormattedLatitude = removeQuotationMarks(latitudeAsString);
+		this.latitude = Double.parseDouble(properlyFormattedLatitude);
+	}
+	
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitudeAsString) {
+		String properlyFormattedLongitude = removeQuotationMarks(longitudeAsString);
+		this.longitude = Double.parseDouble(properlyFormattedLongitude);
+	}
+	
 	public void setPopulationAsString(String populationAsString) {
 		if (removeQuotationMarks(populationAsString).equals("") || removeQuotationMarks(populationAsString) == null) {
-			System.out.println("This is working");
 			this.populationAsString = "0";
 		}
 		else {
@@ -64,7 +86,7 @@ public class City{
 		String presentedName = removeQuotationMarks(name);
 		String presentedCountry = removeQuotationMarks(country);
 		
-		String info = String.format("%-1s%1s%-5s%1s%,1d%1s", presentedName, ", ", presentedCountry, ": ", population, " residents.");
+		String info = String.format("%-1s%1s%-5s%1s%,1d%1s", presentedName, ", ", presentedCountry, ": ", population, " residents");
 		return info;
 	}
 	/**
@@ -76,5 +98,4 @@ public class City{
 	public String removeQuotationMarks(String s) {
 		return s.substring(1, (s.length() - 1));
 	}
-
 }
